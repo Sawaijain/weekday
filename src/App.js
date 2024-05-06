@@ -3,8 +3,8 @@ import MainPage from "./container/jobpage/MainPage";
 
 function App() {
   return (
-  <div>
-   hey
+  <div style={{padding:"10px"}}>
+    <MainPage />
   </div>
   );
 }
