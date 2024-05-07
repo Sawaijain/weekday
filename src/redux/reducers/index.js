@@ -1,4 +1,4 @@
-// redux/reducers/index.js
+// redux/reducers/index.js  cobine all reducers
 import { combineReducers } from 'redux';
 import jobReducer from './jobReducer';
 

@@ -1,3 +1,4 @@
+// modal for view whole job detils
 import React from 'react';
 import { Modal, Box, Typography, Button } from '@mui/material';
 

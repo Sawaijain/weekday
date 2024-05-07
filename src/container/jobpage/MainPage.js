@@ -7,12 +7,13 @@ import JobList from './component/JobList';
 
 const MainPage = ({ jobs, fetchJobs }) => {
   const [limit, setLimit] = useState(10);
+  const [filterJobs,setFilterJobs] = useState()
   useEffect(() => {
     fetchJobs({ limit, offset: 0 });
   }, [fetchJobs, limit]);
 
+  //  when scroll down then for fetch more job
   const fetchMoreJobs = () => {
-    console.log("hit");
     const body = {
       limit:limit+10,
       offset: 0
@@ -22,13 +23,66 @@ const MainPage = ({ jobs, fetchJobs }) => {
   };
   const hasMoreJobs = jobs?.totalCount >= limit;
 
+  useEffect(() => {
+    setFilterJobs(jobs?.jdList) // set jobs if update or when load first time
+  }, [jobs])
+  
+// filter jobs according some parameter
   const handleFilterChange = (filterValues) => {
-    // Fetch filtered jobs based on filter values
-    // You need to implement this function in your jobActions
-    // Pass filterValues as a parameter to fetch filtered jobs
+    console.log("filter",filterValues)
+   
+    // min experience filter
+    let finalData = jobs?.jdList;
+    if(filterValues?.minExperience){
+      finalData = finalData.filter((item)=>{
+       return item?.minExp >= filterValues.minExperience
+      })
+    }
+
+    // work type filter 
+    if(filterValues?.remote){
+      finalData = finalData?.filter((item)=>{
+       if(filterValues?.remote==="remote"){
+        return item?.location=="remote"
+       }else{
+        return item?.location!=="remote"
+       }
+      })
+    }
+
+    // location filter 
+    if(filterValues?.location){
+      finalData = finalData?.filter((item)=>{
+        return item?.location?.toLowerCase()?.includes(filterValues?.location?.toLowerCase());
+      })
+    }
+
+    // company name filter 
+    if(filterValues?.companyName){
+      finalData = finalData?.filter((item)=>{
+        return item?.companyName?.toLowerCase()?.includes(filterValues?.companyName?.toLowerCase())
+      })
+    }
+
+    // role filter 
+    if(filterValues?.role){
+      finalData = finalData?.filter((item)=>{
+        return item?.jobRole?.toLowerCase()?.includes(filterValues?.role?.toLowerCase())
+      })
+    }
+
+    // min base pay filter 
+
+    if(filterValues?.minBasePay){
+      finalData = finalData.filter((item)=>{
+       return item?.minJdSalary >= filterValues.minBasePay
+      })
+    }
+    setFilterJobs(finalData)
+    
   };
 
-
+  // maxJdSalary  minJdSalary  salaryCurrencyCode  location minExp maxExp  jobRole companyName  logoUrl
   return (
     <div>
       <InfiniteScroll
@@ -39,15 +93,20 @@ const MainPage = ({ jobs, fetchJobs }) => {
         endMessage={<p>No more jobs to load</p>}
         scrollThreshold={0.9}
       >
-        <Filter onFilterChange={handleFilterChange}/>
-        <JobList jobs={jobs} />
+          <div style={{padding:"40px"}}>
+        <Filter onFilterChange={handleFilterChange}/> 
+      
+        <JobList jobs={filterJobs} />
+        </div>
       </InfiniteScroll>
     </div>
   );
 };
 
+// getting jobs state from redux store
 const mapStateToProps = (state) => ({
   jobs: state.jobs.jobs
 });
 
+// redux store connect
 export default connect(mapStateToProps, { fetchJobs })(MainPage);

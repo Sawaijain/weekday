@@ -1,4 +1,4 @@
-// redux/actions/jobActions.js
+// action for job fetching
 export const fetchJobsRequest = () => ({
     type: 'FETCH_JOBS_REQUEST'
   });
@@ -23,7 +23,7 @@ export const fetchJobsRequest = () => ({
      const requestOptions = {
           method: "POST",
           headers: myHeaders,
-          body:JSON.stringify(body) // Use 'body' parameter here
+          body:JSON.stringify(body) 
         };
   
         const response = await fetch("https://api.weekday.technology/adhoc/getSampleJdJSON", requestOptions);

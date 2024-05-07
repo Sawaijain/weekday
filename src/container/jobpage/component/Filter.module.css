@@ -1,0 +1,15 @@
+.filterRoot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Add space between filters */
+  align-items: center;
+}
+
+.filterFormControl {
+  min-width: 180px;
+  width: 180px; /* Adjust the minimum width of form controls */
+
+ 
+}
+
+

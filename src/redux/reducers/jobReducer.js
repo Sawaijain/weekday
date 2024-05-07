@@ -1,10 +1,10 @@
-// redux/reducers/jobReducer.js
+// initial state 
 const initialState = {
     jobs: [],
     loading: false,
     error: null
   };
-  
+  //  job reducer to maintain all job fetching things
   const jobReducer = (state = initialState, action) => {
     switch (action.type) {
       case 'FETCH_JOBS_REQUEST':
